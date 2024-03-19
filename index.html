@@ -3,35 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>My Library</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
-  <button type="button" class="button">Add new book</button>
-  <dialog class="dialog">
+  <button type="button" class="button button-add-book">Add new book</button>
+  <dialog class="dialog dialog-add-book">
     <form class="dialog__form">
+      <h1>Add a new book</h1>
       <label class="form__item form__label" for="author">Author</label>
-      <input class="form__item form__input" type="text" name="author" id="author">
+      <input class="form__item form__input" type="text" name="author" id="author" required>
       <label class="form__item form__label" for="title">Title</label>
-      <input class="form__item form__input" type="text" name="title" id="title">
+      <input class="form__item form__input" type="text" name="title" id="title" required>
       <label class="form__item form__label" for="pages">Pages</label>
-      <input class="form__item form__input" type="number" name="pages" id="pages">
-      <div class="form__item">
-        <input class="form__item form__input" type="radio" name="read" id="read" value="read">
-        <label class="form__item form__label" for="read">Read</label>
-        <input class="form__item form__input" type="radio" name="read" id="not-read" value="not-read">
-        <label class="form__item form__label" for="not-read">Not read</label>
+      <input class="form__item form__input" type="number" name="pages" id="pages" required>
+      <div class="form__item form__radio-group">
+        <input class="form__item form__radio-input" type="radio" name="read" id="read" value="read">
+        <label class="form__item form__radio-label" for="read">Read</label>
+        <input class="form__item form__radio-input" type="radio" name="read" id="not-read" value="not-read" checked>
+        <label class="form__item form__radio-label" for="not-read">Not read</label>
+      </div>
+
+      <div class="form__item form__button-group">
+        <button type="submit" class="form__button form__button-add-book button button--primary button--take-space">Add book</button>
+        <button type="button" class="form__button form__button-cancel button button--secondary">Cancel</button>
       </div>
     </form>
   </dialog>
 
   <table class="book-list">
-    <tr>
-      <th>Author</th>
-      <th>Title</th>
-      <th>Pages</th>
-      <th>Reading Status</th>
+    <tr class="book-list-row">
+      <th class="book-list-column book-list-header">Author</th>
+      <th class="book-list-column book-list-header">Title</th>
+      <th class="book-list-column book-list-header">Pages</th>
+      <th class="book-list-column book-list-header">Reading Status</th>
     </tr>
   </table>
 </body>

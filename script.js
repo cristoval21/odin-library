@@ -17,21 +17,52 @@ function addBookToLibrary(author, title, numOfPages, haveRead) {
 }
 
 const bookList = document.querySelector(".book-list");
-for (let book of myLibrary) {
-  let rowItem = document.createElement("tr");
-  let author = document.createElement("td");
-  let title = document.createElement("td");
-  let numOfPages = document.createElement("td");
-  let haveRead = document.createElement("td");
+fillTable();
 
-  author.textContent = book.author;
-  title.textContent = book.title;
-  numOfPages.textContent = book.numOfPages;
-  haveRead.textContent = book.haveRead;
+const buttonAddBook = document.querySelector(".button-add-book");
+const dialogAddBook = document.querySelector(".dialog-add-book");
+buttonAddBook.addEventListener("click", () => {
+  dialogAddBook.showModal();
+});
 
-  rowItem.appendChild(author);
-  rowItem.appendChild(title);
-  rowItem.appendChild(numOfPages);
-  rowItem.appendChild(haveRead);
-  bookList.appendChild(rowItem);
+const buttonFormAddBook = document.querySelector(".form__button-add-book");
+const buttonFormCancel = document.querySelector(".form__button-cancel");
+const inputFormAuthor = document.querySelector("#author");
+const inputFormTitle = document.querySelector("#title");
+const inputFormPages = document.querySelector("#pages");
+const inputFormRead = document.querySelector("#read");
+buttonFormAddBook.addEventListener("click", () => {
+  event.preventDefault();
+  addBookToLibrary(
+    inputFormAuthor.value,
+    inputFormTitle.value,
+    inputFormPages.value,
+    inputFormRead.checked
+  );
+  dialogAddBook.close();
+  fillTable();
+});
+buttonFormCancel.addEventListener("click", () => {
+  dialogAddBook.close();
+});
+
+function fillTable() {
+  for (let book of myLibrary) {
+    let rowItem = document.createElement("tr");
+    let author = document.createElement("td");
+    let title = document.createElement("td");
+    let numOfPages = document.createElement("td");
+    let haveRead = document.createElement("td");
+
+    author.textContent = book.author;
+    title.textContent = book.title;
+    numOfPages.textContent = book.numOfPages;
+    haveRead.textContent = book.haveRead;
+
+    rowItem.appendChild(author);
+    rowItem.appendChild(title);
+    rowItem.appendChild(numOfPages);
+    rowItem.appendChild(haveRead);
+    bookList.appendChild(rowItem);
+  }
 }
