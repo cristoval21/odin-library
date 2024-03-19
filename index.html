@@ -8,6 +8,24 @@
   <script src="script.js" defer></script>
 </head>
 <body>
+  <button type="button" class="button">Add new book</button>
+  <dialog class="dialog">
+    <form class="dialog__form">
+      <label class="form__item form__label" for="author">Author</label>
+      <input class="form__item form__input" type="text" name="author" id="author">
+      <label class="form__item form__label" for="title">Title</label>
+      <input class="form__item form__input" type="text" name="title" id="title">
+      <label class="form__item form__label" for="pages">Pages</label>
+      <input class="form__item form__input" type="number" name="pages" id="pages">
+      <div class="form__item">
+        <input class="form__item form__input" type="radio" name="read" id="read" value="read">
+        <label class="form__item form__label" for="read">Read</label>
+        <input class="form__item form__input" type="radio" name="read" id="not-read" value="not-read">
+        <label class="form__item form__label" for="not-read">Not read</label>
+      </div>
+    </form>
+  </dialog>
+
   <table class="book-list">
     <tr>
       <th>Author</th>
