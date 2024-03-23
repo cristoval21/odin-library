@@ -80,7 +80,13 @@ function refreshCards() {
     cardReadButton.textContent = "check_circle";
     cardDeleteButton.textContent = "delete";
 
-    cardDeleteButton.addEventListener("click", removeBook(card.getAttribute("data-index")));
+    cardReadButton.addEventListener("click", () => {
+      toggleReadStatus(Number(card.getAttribute("data-index")));
+    })
+
+    cardDeleteButton.addEventListener("click", () => {
+      removeBook(Number(card.getAttribute("data-index")));
+    });
   
     cardHeader.appendChild(cardAuthor);
     cardHeader.appendChild(cardPages);
@@ -97,5 +103,11 @@ function refreshCards() {
 }
 
 function removeBook(index) {
-  // myLibrary.splice(index, 1);
+  myLibrary.splice(index, 1);
+  refreshCards();
+}
+
+function toggleReadStatus(index) {
+  myLibrary[index].haveRead = !myLibrary[index].haveRead;
+  refreshCards();
 }
