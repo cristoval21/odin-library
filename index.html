@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Platypi:ital,wght@0,300..800;1,300..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -16,40 +19,59 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-  <button type="button" class="button button--primary button-add-book">Add new book</button>
-  <dialog class="dialog dialog-add-book">
-    <form class="dialog__form">
-      <h1>Add a new book</h1>
-      <label class="form__item form__label" for="author">Author</label>
-      <input class="form__item form__input" type="text" name="author" id="author" required>
-      <label class="form__item form__label" for="title">Title</label>
-      <input class="form__item form__input" type="text" name="title" id="title" required>
-      <label class="form__item form__label" for="pages">Pages</label>
-      <input class="form__item form__input" type="number" name="pages" id="pages" required>
-      <div class="form__item form__radio-group">
-        <input class="form__item form__radio-input" type="radio" name="read" id="read" value="read">
-        <label class="form__item form__radio-label" for="read">Read</label>
-        <input class="form__item form__radio-input" type="radio" name="read" id="not-read" value="not-read" checked>
-        <label class="form__item form__radio-label" for="not-read">Not read</label>
+  <div class="page-container">
+    <header class="header">
+      <h1 class="page-title">My library</h1>
+      <button type="button" class="button button--primary button-add-book header__button">Add new book</button>
+    </header>
+    <main class="main">
+      <table class="table">
+        <thead class="table__header">
+          <tr class="table__row">
+            <th class="table__cell--header table__cell">Author</th>
+            <th class="table__cell--header table__cell">Title</th>
+            <th class="table__cell--header table__cell">Pages</th>
+            <th class="table__cell--header table__cell">Status</th>
+            <th class="table__cell--header table__cell">Delete</th>
+          </tr>
+        </thead>
+        <tbody class="table__body"></tbody>
+      </table>
+      <dialog class="dialog dialog-add-book">
+        <form class="dialog__form">
+          <h1>Add a new book</h1>
+          <label class="form__item form__label" for="author">Author</label>
+          <input class="form__item form__input" type="text" name="author" id="author" required>
+          <label class="form__item form__label" for="title">Title</label>
+          <input class="form__item form__input" type="text" name="title" id="title" required>
+          <label class="form__item form__label" for="pages">Pages</label>
+          <input class="form__item form__input" type="number" name="pages" id="pages" required>
+          <div class="form__item form__radio-group">
+            <input class="form__item form__radio-input" type="radio" name="read" id="read" value="read">
+            <label class="form__item form__radio-label" for="read">Read</label>
+            <input class="form__item form__radio-input" type="radio" name="read" id="not-read" value="not-read" checked>
+            <label class="form__item form__radio-label" for="not-read">Not read</label>
+          </div>
+    
+          <div class="form__item form__button-group">
+            <button type="submit" class="form__button form__button-add-book button button--primary button--take-space">Add book</button>
+            <button type="button" class="form__button form__button-cancel button button--secondary">Cancel</button>
+          </div>
+        </form>
+      </dialog>
+    
+      <!-- <table class="book-list">
+        <tr class="book-list-row">
+          <th class="book-list-header">Author</th>
+          <th class="book-list-header">Title</th>
+          <th class="book-list-header">Pages</th>
+          <th class="book-list-header">Reading Status</th>
+        </tr>
+      </table> -->
+    
+      <div class="library-wrapper">
       </div>
-
-      <div class="form__item form__button-group">
-        <button type="submit" class="form__button form__button-add-book button button--primary button--take-space">Add book</button>
-        <button type="button" class="form__button form__button-cancel button button--secondary">Cancel</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- <table class="book-list">
-    <tr class="book-list-row">
-      <th class="book-list-header">Author</th>
-      <th class="book-list-header">Title</th>
-      <th class="book-list-header">Pages</th>
-      <th class="book-list-header">Reading Status</th>
-    </tr>
-  </table> -->
-
-  <div class="library-wrapper">
+    </main>
   </div>
 </body>
 </html>
