@@ -50,20 +50,21 @@ function refreshCards() {
   for (let i = 0; i < myLibrary.length; i++) {
     const book = myLibrary[i];
 
-    const row = document.createElement("tr");
+    const row = document.createElement("div");
     row.classList.add("table__row");
     row.setAttribute("data-index", i);
 
     for (const prop in book) {
-      const cell = document.createElement("td");
+      const cell = document.createElement("div");
       cell.classList.add("table__cell");
-      cell.classList.add("table__cell-" + prop);
+      cell.classList.add("table__cell--" + prop);
 
       const statusButton = document.createElement("button");
+      statusButton.className = "button button--secondary table__button";
+      statusButton.type = "button";
       if (prop != "haveRead") {
         cell.textContent = book[prop];
       } else {
-        statusButton.className = "button button--secondary";
         statusButton.textContent = book.haveRead ? "Read" : "Not read";
 
         cell.appendChild(statusButton);
@@ -76,10 +77,11 @@ function refreshCards() {
       row.appendChild(cell);
     }
     
-    const cell = document.createElement("td");
+    const cell = document.createElement("div");
     cell.classList.add("table__cell");
     const deleteButton = document.createElement("button");
-    deleteButton.className = "button button--secondary";
+    deleteButton.className = "button button--secondary table__button";
+    deleteButton.type = "button";
     deleteButton.textContent = "Delete";
     cell.appendChild(deleteButton);
     deleteButton.addEventListener("click", () => {removeBook(Number(row.dataset.index))});
