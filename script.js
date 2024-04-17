@@ -45,60 +45,49 @@ buttonFormCancel.addEventListener("click", () => {
 });
 
 function refreshCards() {
-  const libraryWrapper = document.querySelector(".library-wrapper");
-  libraryWrapper.textContent = "";
+  const tableBody = document.querySelector(".table__body");
+  tableBody.textContent = "";
   for (let i = 0; i < myLibrary.length; i++) {
     const book = myLibrary[i];
-    const card = document.createElement("div");
-    const cardHeader = document.createElement("div");
-    const cardAuthor = document.createElement("p");
-    const cardPages = document.createElement("p");
-    const cardTitle = document.createElement("p");
-    const cardButtons = document.createElement("div");
-    const cardReadButton = document.createElement("button");
-    const cardDeleteButton = document.createElement("button");
-  
-    card.setAttribute("data-index", i);
-    card.classList.add("book-card");
-    cardHeader.classList.add("book-card__header");
-    cardAuthor.className = "book-card__author book-card__pill";
-    cardPages.className = "book-card__pages book-card__pill";
-    cardTitle.classList.add("book-card__title");
-    cardButtons.classList.add("book-card__buttons");
-    cardReadButton.className = "book-card__button button material-symbols-outlined";
-    cardDeleteButton.className = "book-card__button button button--secondary material-symbols-outlined";
 
-    if (book.haveRead) {
-      cardReadButton.classList.add("button--primary");
-    } else {
-      cardReadButton.classList.add("button--secondary");
+    const row = document.createElement("div");
+    row.classList.add("table__row");
+    row.setAttribute("data-index", i);
+
+    for (const prop in book) {
+      const cell = document.createElement("div");
+      cell.classList.add("table__cell");
+      cell.classList.add("table__cell--" + prop);
+
+      const statusButton = document.createElement("button");
+      statusButton.className = "button button--secondary table__button";
+      statusButton.type = "button";
+      if (prop != "haveRead") {
+        cell.textContent = book[prop];
+      } else {
+        statusButton.textContent = book.haveRead ? "Read" : "Not read";
+
+        cell.appendChild(statusButton);
+
+        statusButton.addEventListener("click", () => {
+          toggleReadStatus(Number(row.dataset.index));
+        })
+      }
+      
+      row.appendChild(cell);
     }
-  
-    cardAuthor.textContent = book.author;
-    cardPages.textContent = book.numOfPages;
-    cardTitle.textContent = book.title;
-    cardReadButton.textContent = "check_circle";
-    cardDeleteButton.textContent = "delete";
-
-    cardReadButton.addEventListener("click", () => {
-      toggleReadStatus(Number(card.getAttribute("data-index")));
-    })
-
-    cardDeleteButton.addEventListener("click", () => {
-      removeBook(Number(card.getAttribute("data-index")));
-    });
-  
-    cardHeader.appendChild(cardAuthor);
-    cardHeader.appendChild(cardPages);
     
-    cardButtons.appendChild(cardReadButton);
-    cardButtons.appendChild(cardDeleteButton);
-  
-    card.appendChild(cardHeader);
-    card.appendChild(cardTitle);
-    card.appendChild(cardButtons);
-  
-    libraryWrapper.appendChild(card);
+    const cell = document.createElement("div");
+    cell.classList.add("table__cell");
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "button button--secondary table__button";
+    deleteButton.type = "button";
+    deleteButton.textContent = "Delete";
+    cell.appendChild(deleteButton);
+    deleteButton.addEventListener("click", () => {removeBook(Number(row.dataset.index))});
+    row.appendChild(cell);
+
+    tableBody.appendChild(row);
   }
 }
 
