@@ -1,102 +1,168 @@
-function Book(author, title, numOfPages, haveRead) {
-  this.author = author;
-  this.title = title;
-  this.numOfPages = numOfPages;
-  this.haveRead = haveRead;
+class Book {
+  constructor(title, author, pages, haveRead) {
+    this._title = title;
+    this._author = author;
+    this._pages = pages;
+    this._haveRead = haveRead;
+  }
+
+  toggleRead() {
+    this._haveRead = !this._haveRead;
+  }
+
+  getAuthor() {
+    return this._author;
+  }
+
+  getTitle() {
+    return this._title;
+  }
+
+  getPages() {
+    return this._pages;
+  }
+
+  getRead() {
+    return this._haveRead;
+  }
+
+  getAllProps() {
+    return {
+      title: this._title,
+      author: this._author,
+      pages: this._pages,
+      haveRead: this._haveRead,
+    }
+  }
 }
 
-const myLibrary = [
-  new Book("Weir, Andy", "The Martian", 369, false),
-  new Book("Roth, Veronica", "Divergent", 487, false),
-  new Book("Sheldon, Sidney", "Bloodline", 464, true)
-];
+class BookLibrary {
+  _library = [];
 
-const bookList = document.querySelector(".book-list");
-refreshCards();
+  addBook(author, title, pages, haveRead) {
+    const book = new Book(author, title, pages, haveRead);
+    this._library.push(book);
+  }
 
-const buttonAddBook = document.querySelector(".button-add-book");
-const dialogAddBook = document.querySelector(".dialog-add-book");
-buttonAddBook.addEventListener("click", () => {
-  dialogAddBook.showModal();
-});
+  removeBook(index) {
+    this._library.splice(index, 1);
+  }
 
-const buttonFormAddBook = document.querySelector(".form__button-add-book");
-const buttonFormCancel = document.querySelector(".form__button-cancel");
-const inputFormAuthor = document.querySelector("#author");
-const inputFormTitle = document.querySelector("#title");
-const inputFormPages = document.querySelector("#pages");
-const inputFormRead = document.querySelector("#read");
-buttonFormAddBook.addEventListener("click", () => {
-  event.preventDefault();
+  getBook(index) {
+    return this._library[index];
+  }
 
-  const book = new Book(
-    inputFormAuthor.value,
-    inputFormTitle.value,
-    inputFormPages.value,
-    inputFormRead.checked
-  )
-  
-  myLibrary.push(book);
-  refreshCards();
-  dialogAddBook.close();
-});
-buttonFormCancel.addEventListener("click", () => {
-  dialogAddBook.close();
-});
+  getLibrary() {
+    return this._library;
+  }
 
-function refreshCards() {
-  const tableBody = document.querySelector(".table__body");
-  tableBody.textContent = "";
-  for (let i = 0; i < myLibrary.length; i++) {
-    const book = myLibrary[i];
+  getLibraryLength() {
+    return this._library.length;
+  }
+}
 
-    const row = document.createElement("div");
-    row.classList.add("table__row");
-    row.setAttribute("data-index", i);
+function ScreenController() {
+  const library = new BookLibrary();
 
-    for (const prop in book) {
-      const cell = document.createElement("div");
-      cell.classList.add("table__cell");
-      cell.classList.add("table__cell--" + prop);
+  const dialogAddBook = document.querySelector(".dialog-add-book");
+  const buttonAddBook = document.querySelector(".button-add-book");
+  buttonAddBook.addEventListener("click", openModal);
+  handleModal();
 
-      const statusButton = document.createElement("button");
-      statusButton.className = "button button--secondary table__button";
-      statusButton.type = "button";
-      if (prop != "haveRead") {
-        cell.textContent = book[prop];
-      } else {
-        statusButton.textContent = book.haveRead ? "Read" : "Not read";
+  updateTable();
 
-        cell.appendChild(statusButton);
+  function updateTable() {
+    const tableBody = document.querySelector(".table__body");
+    tableBody.textContent = "";
+    
+    for (let i = 0; i < library.getLibraryLength(); i++) {
+      const book = library.getBook(i);
+      const bookProps = book.getAllProps();
 
-        statusButton.addEventListener("click", () => {
-          toggleReadStatus(Number(row.dataset.index));
-        })
+      const row = document.createElement("div");
+      row.classList.add("table__row");
+      row.setAttribute("data-index", i);
+
+      for (const prop in bookProps) {
+        const cell = document.createElement("div");
+        cell.classList.add("table__cell");
+        cell.classList.add("table__cell--" + prop);
+
+        if (prop != "haveRead") {
+          cell.textContent = bookProps[prop];
+        } else {
+          handleReadButton(book, cell);
+        }
+        
+        row.appendChild(cell);
       }
       
-      row.appendChild(cell);
+      row.appendChild(handleRemoveButton(row.dataset.index));
+
+      tableBody.appendChild(row);
     }
-    
+  }
+
+  function handleRemoveButton(rowIndex) {
     const cell = document.createElement("div");
     cell.classList.add("table__cell");
+
     const deleteButton = document.createElement("button");
     deleteButton.className = "button button--secondary table__button";
     deleteButton.type = "button";
     deleteButton.textContent = "Delete";
-    cell.appendChild(deleteButton);
-    deleteButton.addEventListener("click", () => {removeBook(Number(row.dataset.index))});
-    row.appendChild(cell);
 
-    tableBody.appendChild(row);
+    cell.appendChild(deleteButton);
+    deleteButton.addEventListener("click", () => {
+      library.removeBook(parseInt(rowIndex));
+      updateTable();
+    });
+
+    return cell;
+  }
+
+  function handleReadButton(book, cell) {
+    const statusButton = document.createElement("button");
+    statusButton.className = "button button--secondary table__button";
+    statusButton.type = "button";
+    statusButton.textContent = book._haveRead ? "Read" : "Not read";
+
+    cell.appendChild(statusButton);
+
+    statusButton.addEventListener("click", () => {
+      book.toggleRead();
+      updateTable();
+    });
+  }
+
+  function openModal() {
+    dialogAddBook.showModal();
+  }
+
+  function handleModal() {
+    const buttonFormAddBook = document.querySelector(".form__button-add-book");
+    const buttonFormCancel = document.querySelector(".form__button-cancel");
+    const inputFormAuthor = document.querySelector("#author");
+    const inputFormTitle = document.querySelector("#title");
+    const inputFormPages = document.querySelector("#pages");
+    const inputFormRead = document.querySelector("#read");
+
+    buttonFormAddBook.addEventListener("click", () => {
+      event.preventDefault();
+      library.addBook(
+        inputFormTitle.value,
+        inputFormAuthor.value,
+        inputFormPages.value,
+        inputFormRead.checked
+      )
+      updateTable();
+      dialogAddBook.close();
+    });
+
+    buttonFormCancel.addEventListener("click", () => {
+      dialogAddBook.close();
+    }); 
   }
 }
 
-function removeBook(index) {
-  myLibrary.splice(index, 1);
-  refreshCards();
-}
-
-function toggleReadStatus(index) {
-  myLibrary[index].haveRead = !myLibrary[index].haveRead;
-  refreshCards();
-}
+ScreenController();
